@@ -8,10 +8,12 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 public class HistogramDisplay extends ApplicationFrame{
-
-    public HistogramDisplay() {
+    private final Histogram<String> histo;
+    public HistogramDisplay(Histogram<String> histo) {
         super("histograma");
+        this.histo=histo;
         setContentPane(createPanel());
+        setLocationRelativeTo(null);
         pack();
     }
     public void execute(){
@@ -29,7 +31,7 @@ public class HistogramDisplay extends ApplicationFrame{
                 "número de email", 
                 dataSet, 
                 PlotOrientation.VERTICAL, 
-                false, 
+                true, 
                 rootPaneCheckingEnabled, 
                 rootPaneCheckingEnabled
                 );
@@ -38,10 +40,9 @@ public class HistogramDisplay extends ApplicationFrame{
 
     private DefaultCategoryDataset createDataset() {
         DefaultCategoryDataset dataSet=new DefaultCategoryDataset();
-        dataSet.addValue(5, "", "gmail.com");
-        dataSet.addValue(10, "", "ulpgc.es");
-        dataSet.addValue(8, "", "ull.es");
-        dataSet.addValue(2, "", "hotmail.com");
+        for (String key : histo.keyset()) {
+            dataSet.addValue(histo.get(key), key, key);
+        }
         return dataSet;    
     }
     
